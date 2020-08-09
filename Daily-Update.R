@@ -9,16 +9,15 @@ yesterday = Sys.Date() - 1
 today_file = paste(month(today), "-", day(today), ".csv", sep = "")
 yesterday_file = paste(month(yesterday), "-", day(yesterday), ".csv", sep = "")
 
-file1 = file.path("C:", "Users", "mavos", "OneDrive", "Statistics", "Covid", "Daily-Data", today_file)
-file2 = file.path("C:", "Users", "mavos", "OneDrive", "Statistics", "Covid", "Daily-Data", yesterday_file)
-file3 = file.path("C:", "Users", "mavos", "OneDrive", "Statistics", "Covid", "State_data.csv")
-file4 = file.path("C:", "Users", "mavos", "OneDrive", "Statistics", "Covid", "County_data.csv")
 
+today_file = file.path("Daily-Data", today_file)
+yesterday_file = file.path("Daily-Data", yesterday_file)
 
 # Get Data
-data_today = fread(file1, col.names = c("County", "IndTested", "IndPositive", "IndRec", "Deaths"))
-data_yesterday = fread(file2)
-county_data = fread(file4)
+data_today = fread(today_file, col.names = c("County", "IndTested", "IndPositive", "IndRec", "Deaths"))
+data_yesterday = fread(yesterday_file)
+statewide = fread("State_data.csv")
+county_data = fread("County_data.csv")
 
 
 # Organize the data from today
@@ -44,7 +43,6 @@ county_data = county_data[order(ID, decreasing = TRUE)]
 
 
 # Update the statewide data
-statewide = fread(file3)
 statewide$Date = paste(statewide$Year, statewide$Month, statewide$Day, sep = "-")
 statewide$Date = as.Date.character(statewide$Date)
 today_statewide = data.frame(today, year(today), month(today), day(today), sum(data_today$IndTested), sum(data_today$IndPositive), sum(data_today$IndRec), sum(data_today$Deaths), sum(data_today$NewIndTested), sum(data_today$NewIndPositive), sum(data_today$NewIndRec), sum(data_today$NewDeaths), 0, statewide$ID[1] + 1)
@@ -55,28 +53,8 @@ statewide = statewide[order(ID, decreasing = TRUE)]
 
 
 # Write out new data
-fwrite(data_today, file = file1)
-fwrite(statewide, file = file3)
-fwrite(county_data, file = file4)
-
-
-
-county_test_rate = function(counties = c("Benton", "Story", "Linn", "Polk")){
-  county_data = setDF(county_data)
-  temp = county_data %>% filter(County %in%  counties)
-  temp$Date = paste(temp$Year, temp$Month, temp$Day, sep = "-")
-  temp$Date = as.Date.character(temp$Date)
-  temp %>%
-    ggplot(aes(x = Date, y = PosTestRate, color = County)) +
-    geom_line()
-}
-
-state_test_rate = function(){
-  statewide = setDF(statewide)
-  statewide$Date = paste(statewide$Year, statewide$Month, statewide$Day, sep = "-")
-  statewide$Date = as.Date.character(statewide$Date)
-  statewide %>%
-    ggplot(aes(x = Date, y = PosTestRate)) + geom_line()
-}
+fwrite(data_today, file = today_file)
+fwrite(statewide, file = "State_data.csv")
+fwrite(county_data, file = "County_data.csv")
 
 
