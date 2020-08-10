@@ -2,11 +2,17 @@ library(readr)
 library(dplyr)
 library(ggplot2)
 library(magrittr)
+library(USAboundaries)
+library(USAboundariesData)
+library(leaflet)
 
 
 # Read in data files
 county_data = read_csv("County_data.csv")
 statewide = read_csv("State_data.csv")
+
+ia_counties = us_counties()
+ia_counties = ia_counties %>% filter(state_name == "Iowa")
 
 
 # Create new date columns
@@ -49,3 +55,4 @@ county_deaths = function(counties = c("Benton", "Story", "Linn", "Polk"), type =
       ggplot(aes(x = Date, y = Deaths, color = County)) + geom_line()
   }
 }
+
