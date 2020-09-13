@@ -169,8 +169,8 @@ class MainFrame(wx.Frame):
     def init_data(self):
         counter = 0
         date_list = []
-        for filename in os.listdir(os.path.join(os.getcwd(), 'covid19\Daily-Data')):
-            county, tested, positive, recovered, dead = read_csv('covid19\Daily-Data\\'+filename)
+        for filename in os.listdir(os.path.join(os.getcwd(), 'Daily-Data')):
+            county, tested, positive, recovered, dead = read_csv('Daily-Data\\'+filename)
             # print('starting {}'.format(filename))
             if counter == 0:
                 data_dict = create_dict(county, tested, positive, recovered, dead)
