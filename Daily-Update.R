@@ -1,6 +1,8 @@
 library(data.table)
 library(lubridate)
 library(dplyr)
+# library(magrittr)
+# library(stringr)
 
 # Create File Names
 today = Sys.Date()
@@ -14,6 +16,12 @@ yesterday_file = file.path("Daily-Data", yesterday_file)
 
 # Get Data
 data_today = fread(today_file, col.names = c("County", "IndTested", "IndPositive", "IndRec", "Deaths"))
+# data_today = fread(today_file, col.names = c("County", "IndTested", "IndPositive", "IndRec", "Deaths", "Deaths_under", "Deaths_contrib"), header = FALSE)
+# data_today = data_today[, 1:5]
+data_today$IndTested %<>% str_remove_all(",") %>% as.integer()
+data_today$IndPositive %<>% str_remove_all(",") %>% as.integer()
+data_today$IndRec %<>% str_remove_all(",") %>% as.integer()
+data_today$Deaths %<>% str_remove_all(",") %>% as.integer()
 data_yesterday = fread(yesterday_file)
 statewide = fread("State_data.csv")
 county_data = fread("County_data.csv")
