@@ -24,28 +24,26 @@ counties = left_join(counties %>% mutate(County = NAME), county_data[1:99,])
 county_test_rate = function(counties = c("Benton", "Story", "Linn", "Polk")){
   temp = county_data %>% filter(County %in%  counties)
   temp %>%
-    ggplot(aes(x = Date, y = PosTestRate, color = County)) +
-    geom_line()
+    ggplot(aes(x = Date, y = PosTestRate, color = County)) + geom_line() + ylab("County Individual Positivity")
 }
 
 
 state_test_rate = function(){
   statewide %>%
-    ggplot(aes(x = Date, y = PosTestRate)) + geom_line()
+    ggplot(aes(x = Date, y = PosTestRate)) + geom_line() + ylab("Statewide Individual Positivity")
 }
 
 
 rolling_county_test_rate = function(counties = c("Benton", "Story", "Linn", "Polk")){
   temp = county_data %>% filter(County %in%  counties)
   temp %>%
-    ggplot(aes(x = Date, y = PosTestRate14, color = County)) +
-    geom_line()
+    ggplot(aes(x = Date, y = PosTestRate14, color = County)) + geom_line() + ylab("14 Day County Individual Positivity")
 }
 
 
 rolling_state_test_rate = function(){
   statewide %>%
-    ggplot(aes(x = Date, y = PosTestRate14)) + geom_line()
+    ggplot(aes(x = Date, y = PosTestRate14)) + geom_line() + ylab("14 Day Statewide Individual Positivity")
 }
 
 
