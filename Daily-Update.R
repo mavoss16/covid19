@@ -7,8 +7,8 @@ library(dplyr)
 # Create File Names
 today = Sys.Date()
 yesterday = Sys.Date() - 1
-today_file = paste(month(today), "-", day(today), ".csv", sep = "")
-yesterday_file = paste(month(yesterday), "-", day(yesterday), ".csv", sep = "")
+today_file = paste("year1_", month(today), "-", day(today), ".csv", sep = "")
+yesterday_file = paste("year1_", month(yesterday), "-", day(yesterday), ".csv", sep = "")
 
 
 today_file = file.path("Daily-Data", today_file)
